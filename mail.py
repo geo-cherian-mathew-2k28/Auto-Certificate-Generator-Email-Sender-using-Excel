@@ -4,20 +4,17 @@ import os
 import smtplib
 from email.message import EmailMessage
 
-# === Configurable Paths ===
-excel_file = 'students.xlsx'  # Must have columns: Name, Email
+excel_file = 'students.xlsx' 
 template_path = 'participation tedx 25.png'
 output_folder = 'certificates'
-font_path = 'GreatVibes-Regular.ttf'  # Replace with desired font
+font_path = 'GreatVibes-Regular.ttf' 
 your_email = 'mathewgeo530@gmail.com'
-your_password = 'qcasydggozsdzafn'  # Gmail App Password
+your_password = 'qcasydggozsdzafn'  
 
-# === Font Settings ===
 font_size = 160
 font_color = (255, 255, 255)
-text_y = 1200  # Final Y-position for the name
+text_y = 1200  
 
-# === Setup ===
 os.makedirs(output_folder, exist_ok=True)
 
 try:
@@ -29,7 +26,6 @@ except IOError:
 template_img = Image.open(template_path).convert("RGB")
 img_width, img_height = template_img.size
 
-# === HTML Email Template ===
 def generate_html(name):
     return f"""
     <!DOCTYPE html>
@@ -53,7 +49,7 @@ def generate_html(name):
     </html>
     """
 
-# === Email Sender ===
+
 def send_email(to_email, name, attachment_path):
     msg = EmailMessage()
     msg['Subject'] = "🎮 Game Development Workshop - Your Certificate"
@@ -62,26 +58,24 @@ def send_email(to_email, name, attachment_path):
     msg.set_content(f"Hi {name},\n\nPlease view this email in HTML. Your certificate is attached.")
     msg.add_alternative(generate_html(name), subtype='html')
 
-    # Attach certificate
     with open(attachment_path, 'rb') as f:
         file_data = f.read()
         file_name = os.path.basename(attachment_path)
         msg.add_attachment(file_data, maintype='image', subtype='png', filename=file_name)
 
-    # Send email
+
     with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
         smtp.login(your_email, your_password)
         smtp.send_message(msg)
         print(f"✅ Email sent to {name} ({to_email})")
 
-# === Main Execution ===
 df = pd.read_excel(excel_file)
 
 for _, row in df.iterrows():
     name = str(row['Name']).strip()
     email = str(row['Email']).strip()
 
-    # Generate certificate
+    
     cert_img = template_img.copy()
     draw = ImageDraw.Draw(cert_img)
     text_width = draw.textlength(name, font=font)
@@ -92,10 +86,11 @@ for _, row in df.iterrows():
     cert_img.save(cert_path)
     print(f"✅ Certificate generated for: {name}")
 
-    # Send email
+
     try:
         send_email(email, name, cert_path)
     except Exception as e:
         print(f"❌ Failed to send email to {email}: {e}")
 
 print("🎉 All certificates processed and emails sent!")
+
