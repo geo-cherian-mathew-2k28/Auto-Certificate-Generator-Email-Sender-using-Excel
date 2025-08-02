@@ -4,20 +4,19 @@ import os
 import smtplib
 from email.message import EmailMessage
 
-# === Configurable Paths ===
-excel_file = 'students.xlsx'  # Must have columns: Name, Email
-template_path = 'participation tedx 25.png'
-output_folder = 'certificates'
-font_path = 'GreatVibes-Regular.ttf'  # Replace with desired font
-your_email = 'mathewgeo530@gmail.com'
-your_password = 'qcasydggozsdzafn'  # Gmail App Password
 
-# === Font Settings ===
+excel_file = 'students.xlsx' #create a excel file with Column 1 with Name list And Column 2 with Email ID
+template_path = 'Certificate_template.png' #template certificate
+output_folder = 'certificates' 
+font_path = 'GreatVibes-Regular.ttf' #font need to be downloaded fist to use ,otherwise use arial.ttf 
+your_email = 'examplemail0@gmail.com' #provide your sender mail
+your_password = 'abcdefghijklmn'  #replace the 16 digit password.Refer the README to know how to generate it.
+
 font_size = 160
 font_color = (255, 255, 255)
-text_y = 1200  # Final Y-position for the name
+text_y = 1200 #Adjust y value for better alignment of the name.refer README
 
-# === Setup ===
+
 os.makedirs(output_folder, exist_ok=True)
 
 try:
@@ -29,8 +28,7 @@ except IOError:
 template_img = Image.open(template_path).convert("RGB")
 img_width, img_height = template_img.size
 
-# === HTML Email Template ===
-def generate_html(name):
+def generate_html(name):  #you can place another html content in this field or use the same and edit it as per your use
     return f"""
     <!DOCTYPE html>
     <html>
@@ -43,7 +41,7 @@ def generate_html(name):
                <strong>Time:</strong> 9:00 AM<br>
                <strong>Venue:</strong> AJCE, ACM Chapter</p>
             <p>Explore the world of game dev with us! 👾</p>
-            <a href="https://chat.whatsapp.com/your-group-link"
+            <a href="https://chat.whatsapp.com/your-group-link" 
                style="display: inline-block; background: #FF0080; color: #fff; padding: 12px 20px; border-radius: 6px; text-decoration: none;">
                👉 Join WhatsApp Group
             </a>
@@ -53,7 +51,7 @@ def generate_html(name):
     </html>
     """
 
-# === Email Sender ===
+
 def send_email(to_email, name, attachment_path):
     msg = EmailMessage()
     msg['Subject'] = "🎮 Game Development Workshop - Your Certificate"
@@ -62,26 +60,26 @@ def send_email(to_email, name, attachment_path):
     msg.set_content(f"Hi {name},\n\nPlease view this email in HTML. Your certificate is attached.")
     msg.add_alternative(generate_html(name), subtype='html')
 
-    # Attach certificate
+   
     with open(attachment_path, 'rb') as f:
         file_data = f.read()
         file_name = os.path.basename(attachment_path)
         msg.add_attachment(file_data, maintype='image', subtype='png', filename=file_name)
 
-    # Send email
+
     with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
         smtp.login(your_email, your_password)
         smtp.send_message(msg)
         print(f"✅ Email sent to {name} ({to_email})")
 
-# === Main Execution ===
+
 df = pd.read_excel(excel_file)
 
 for _, row in df.iterrows():
     name = str(row['Name']).strip()
     email = str(row['Email']).strip()
 
-    # Generate certificate
+
     cert_img = template_img.copy()
     draw = ImageDraw.Draw(cert_img)
     text_width = draw.textlength(name, font=font)
@@ -92,10 +90,11 @@ for _, row in df.iterrows():
     cert_img.save(cert_path)
     print(f"✅ Certificate generated for: {name}")
 
-    # Send email
+
     try:
         send_email(email, name, cert_path)
     except Exception as e:
         print(f"❌ Failed to send email to {email}: {e}")
 
 print("🎉 All certificates processed and emails sent!")
+
