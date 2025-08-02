@@ -1,14 +1,16 @@
 🎓 Automated Certificate Generator & Email Sender
-This project provides a straightforward and automated way to create personalized participation certificates and send them to attendees via email. It's designed for anyone needing to efficiently distribute certificates for events like workshops, webinars, or courses.
+This project offers a simple and automated way to create personalized participation certificates and send them via email. It's perfect for quickly distributing certificates for workshops, webinars, or any event.
+
 
 ✨ Key Features
-Generate Personalized Certificates: Creates a unique PNG certificate for each person from a single template.
+Generate Personalized Certificates: Creates a unique PNG certificate for each person from a template.
 
-Custom Name Placement: Adds attendee names to certificates using your chosen font and precise positioning.
+Custom Name Placement: Adds attendee names to certificates with your chosen font and precise positioning.
 
-Automated Email Delivery: Sends certificates as attachments to all recipients listed in your data.
+Automated Email Delivery: Sends certificates as attachments to all recipients from your list.
 
 Customizable Email Content: Includes a flexible HTML email template for event details and links.
+
 
 🚀 Getting Started
 Follow these steps to set up and run the script.
@@ -16,7 +18,7 @@ Follow these steps to set up and run the script.
 Prerequisites
 You'll need:
 
-Python 3.x: Download from python.org/downloads. Remember to check "Add Python to PATH" during installation.
+Python 3.x: Assumed to be installed on your system.
 
 Gmail Account with App Password:
 
@@ -25,31 +27,39 @@ Enable 2-Step Verification on your Google Account: myaccount.google.com/security
 Generate an "App password" under "App passwords" in the security settings. Select "Mail" and "Other (Custom name)", then copy the 16-character password. This is what the script will use, not your regular Gmail password.
 
 Installation
-Download Project Files: Get the project files by cloning the repository or downloading the ZIP and extracting it.
+Download Project Files: Get the project files by cloning the repository or downloading the ZIP and extracting it to your chosen folder.
 
-Install Libraries: Open your terminal/command prompt, navigate to the project folder, and run:
+Install Libraries: Open your terminal/command prompt, navigate to your project folder, and run:
 
-pip install pandas Pillow
+**pip install pandas Pillow**
 
 ⚙️ Configuration
-Prepare your files and adjust the script settings.
+Prepare your input files and adjust the script settings in main.py.
 
-1. Prepare Your Data (students.xlsx)
+1. **Prepare Your Data** (students.xlsx)
 Create an Excel file named students.xlsx in your project folder. It must have two columns: Name and Email.
 
 Example students.xlsx:
 
-| Name | Email |
-| Alice Wonderland | alice@example.com |
-| Bob The Builder | bob@example.com |
+Name
 
-2. Add Your Certificate Template (participation tedx 25.png)
-Place your certificate design (a PNG image) named participation tedx 25.png in the project folder. Ensure it has a blank area for the name.
+Email
 
-3. Include Your Font File (GreatVibes-Regular.ttf)
+Alice Wonderland
+
+alice@example.com
+
+Bob The Builder
+
+bob@example.com
+
+2. **Add Your Certificate Template** (participation tedx 25.png)
+Place your certificate design (a PNG image) named participation tedx 25.png in the project folder. Ensure it has a blank area where the name should go.
+
+3. **Include Your Font File** (GreatVibes-Regular.ttf)
 Place your chosen font file (a .ttf file) in the project folder. You can find free fonts on Google Fonts.
 
-4. Configure main.py
+4. **Configure main.py**
 Open main.py in a text editor and update the following lines:
 
 a. Your Email & App Password
@@ -80,10 +90,11 @@ def generate_html(name):
     <body>
         <!-- Your custom HTML content for the email -->
         <p>Hey <strong>{name}</strong>, here's your certificate!</p>
-        <p>Join our WhatsApp Group: <a href="https://chat.whatsapp.com/your-group-link">Link</a></p>
+        <p>Join our WhatsApp Group: <a href="https://chat.whatsapp.com/your-group-link">Link</a></p>    //change this link
     </body>
     </html>
     """
+
 
 🏃 Running the Script
 Open your terminal or command prompt.
@@ -96,6 +107,8 @@ python main.py
 
 The script will then generate certificates and send emails, showing progress in the console.
 
+
+
 🐛 Troubleshooting
 "Font not found.": Ensure your font file is in the project folder and font_path in main.py is correct.
 
@@ -104,6 +117,8 @@ The script will then generate certificates and send emails, showing progress in 
 "No module named 'pandas'" or "'PIL'": You missed installing the libraries. Run pip install pandas Pillow again.
 
 Name is misplaced/wrong size: Adjust font_size and text_y in main.py as described in the "Font Settings" section.
+
+
 
 🤝 Contributing
 Feel free to contribute to this project by opening issues or submitting pull requests!
